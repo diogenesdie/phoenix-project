@@ -6,17 +6,24 @@ datasource db {
 generator client {
   provider = "prisma-client-js"
 }
-
+// User model
 model User {
   id    String @id @default(cuid())
   email String @unique
+  name  String?
+  city  String?
+  neighborhood String?
+
+  admin Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // One-to-many relationship
   password Password?
-  notes    Note[]
-}
+  // One-to-many relationship
+  reports    Report[]
+} 
 
 model Password {
   hash String
@@ -25,14 +32,31 @@ model Password {
   userId String @unique
 }
 
-model Note {
+
+model Report {
   id    String @id @default(cuid())
   title String
   body  String
+
+  ups   Int @default(0)
+  downs Int @default(0)
+
+  city  String?
+  neighborhood String?
+
+  anonymous Boolean @default(false)
+
+  categories Category[] @relation()
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String
+  reports Report[] @relation()
 }
