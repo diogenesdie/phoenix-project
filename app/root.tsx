@@ -10,6 +10,7 @@ import {
 } from "@remix-run/react";
 
 import tailwindStylesheetUrl from "./styles/tailwind.css";
+import wavesStylesheetUrl from "./styles/waves.css";
 import { getUser } from "./session.server";
 
 //import primereact theme
@@ -19,6 +20,7 @@ import icons from "primeicons/primeicons.css";
 
 export const links: LinksFunction = () => {
   return [{ rel: "stylesheet", href: tailwindStylesheetUrl},
+          { rel: "stylesheet", href: wavesStylesheetUrl},
           { rel: "stylesheet", href: theme},
           { rel: "stylesheet", href: css},
           { rel: "stylesheet", href: icons}
