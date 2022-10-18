@@ -1,10 +1,10 @@
 
 import * as React from "react";
-import type { LoaderArgs, ActionArgs } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
+import type { ActionArgs, LoaderArgs } from "@remix-run/node";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
 import { createUserSession, getUser } from "~/session.server";
-import { json, redirect } from "@remix-run/node";
 import { Form, useActionData } from "@remix-run/react";
 import { verifyLogin } from "~/models/user.server";
 import { safeRedirect, validateEmail } from "~/utils";
@@ -12,7 +12,9 @@ import { safeRedirect, validateEmail } from "~/utils";
 export async function loader({ request }: LoaderArgs) {
     const user = await getUser(request);
 
-    if( user ) return redirect('/reports');
+    if( user && user.admin ) return redirect('/admin');
+
+	if( user ) return redirect('/reports');
     
     return json({});
 
@@ -22,7 +24,7 @@ export async function action({ request }: ActionArgs) {
 	const formData = await request.formData();
 	const email = formData.get("email");
 	const password = formData.get("password");
-	const redirectTo = safeRedirect(formData.get("redirectTo"), "/reports");
+	const redirectTo = safeRedirect(formData.get("redirectTo"), "/admin");
 	const remember = formData.get("remember");
 
 	if (!validateEmail(email)) {
@@ -53,6 +55,11 @@ export async function action({ request }: ActionArgs) {
 			{ errors: { email: "Invalid email or password", password: null } },
 			{ status: 400 }
 		);
+	} else if (!user.admin) {
+		return json(
+			{ errors: { email: "You are not an admin", password: null } },
+			{ status: 401 }
+		);
 	}
 
 	return createUserSession({
@@ -80,7 +87,7 @@ export default function Index() {
 		<main className="relative min-h-screen bg-white sm:flex sm:items-center sm:justify-center">
 			<div className="absolute inset-0 bg-gray-900 bg-opacity-75"></div>
 			<div className="relative z-10 w-full max-w-md p-6 mx-auto bg-white rounded-lg shadow-xl sm:max-w-xl">
-				<h1 className="text-2xl font-semibold text-center text-gray-700">Login</h1>
+				<h1 className="text-2xl font-semibold text-center text-gray-700">Admin Login</h1>
 				<Form method="post" className="mt-4">
 					<div className="flex flex-col mt-4">
 						<label className="text-sm font-semibold text-gray-600">Email</label>

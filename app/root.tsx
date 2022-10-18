@@ -12,8 +12,17 @@ import {
 import tailwindStylesheetUrl from "./styles/tailwind.css";
 import { getUser } from "./session.server";
 
+//import primereact theme
+import theme from "primereact/resources/themes/saga-blue/theme.css";
+import css from "primereact/resources/primereact.min.css";
+import icons from "primeicons/primeicons.css";
+
 export const links: LinksFunction = () => {
-  return [{ rel: "stylesheet", href: tailwindStylesheetUrl }];
+  return [{ rel: "stylesheet", href: tailwindStylesheetUrl},
+          { rel: "stylesheet", href: theme},
+          { rel: "stylesheet", href: css},
+          { rel: "stylesheet", href: icons}
+  ];
 };
 
 export const meta: MetaFunction = () => ({
