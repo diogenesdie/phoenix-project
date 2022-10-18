@@ -23,8 +23,7 @@ export const links: LinksFunction = () => {
           { rel: "stylesheet", href: wavesStylesheetUrl},
           { rel: "stylesheet", href: theme},
           { rel: "stylesheet", href: css},
-          { rel: "stylesheet", href: icons}
-  ];
+          { rel: "stylesheet", href: icons}];
 };
 
 export const meta: MetaFunction = () => ({
