@@ -6,8 +6,6 @@ import { useOptionalUser } from '~/utils';
 import { TabMenu } from 'primereact/tabmenu';
 
 export default function AdminHeader() {
-    const user = useOptionalUser();
-
     const [activeIndex, setActiveIndex] = useState(0);
 
     const itemsMenu = [
